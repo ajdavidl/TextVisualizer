@@ -2,6 +2,7 @@
 Module for text data visualization
 """
 
+import re
 import numpy as np
 import plotly.graph_objects as go
 import networkx as nx 
@@ -80,7 +81,6 @@ def phraseNet(connectors, listText, number_of_pairs=20):
     ----------
     connectors : list of strings
         List of connectors to be used in the construction of the graph.
-        Limitation: each connector has to be a single word. 
         
     listText : list of strings
         List of text to be used as text source in the construction of the graph.
@@ -92,7 +92,15 @@ def phraseNet(connectors, listText, number_of_pairs=20):
     -------
     plotly.graph_objs._figure.Figure
     """
-    connectors = [" %s " % con for con in connectors]
+    for i in range(len(connectors)):
+        if " " in connectors[i]:
+            conOrig = connectors[i]
+            conNew = re.sub(" ","_",conOrig)
+            connectors[i] = conNew
+            for j in range(len(listText)):
+                listText[j] = re.sub(conOrig,conNew,listText[j])
+        connectors[i] = " %s " % connectors[i]
+    
     trigram_count_vect = CountVectorizer(analyzer='word', ngram_range=(3, 3))
     trigram_count_vect.fit(listText)
     bag_of_trigrams = trigram_count_vect.transform(listText)
