@@ -71,7 +71,7 @@ def frequencyPlot(listText, number_of_words=20, stopwords=None, ngramRange=(1, 1
     return fig
 
 
-def phraseNet(connectors, listText, number_of_pairs=20):
+def phraseNet(listText, connectors, number_of_pairs=20):
     """
     Plot the Phrase net of a list of texts.
 
@@ -79,11 +79,11 @@ def phraseNet(connectors, listText, number_of_pairs=20):
 
     Parameters
     ----------
-    connectors : list of strings
-        List of connectors to be used in the construction of the graph.
-
     listText : list of strings
         List of text to be used as text source in the construction of the graph.
+
+    connectors : list of strings
+        List of connectors to be used in the construction of the graph.
 
     number_of_pairs : int
         Number of pairs of words to create the graph.
