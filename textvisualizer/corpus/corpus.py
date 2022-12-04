@@ -6,22 +6,31 @@ from ..textvisualizer import *
 
 class Corpus:
     """
-    Class Corpus to centralize functions
+    Class Corpus to centralize functions.
     Attributes
     ----------
         listText : list of str
             List of the corpus text.
+        lisLabels : list of str
+            List of corpus labels.
     """
 
-    def __init__(self, listText):
+    def __init__(self, listText, listLabels=None):
         """
         Constructor of the class Corpus
         Parameters
         ----------
         listText : list of str
             List of the corpus text.
+        listLabels : list of str
+            List of corpus labels.
         """
+        if (listLabels is not None):
+            if len(listText) != len(listLabels):
+                raise BaseException("Mismatch in lengths of listLabels and listText")
+
         self.listText = listText
+        self.listLabels = listLabels
 
     def __repr__(self):
         return "{self.__class__.__name__}()".format(self=self)
