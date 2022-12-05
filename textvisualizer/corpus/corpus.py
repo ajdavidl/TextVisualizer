@@ -2,7 +2,7 @@
 Class Corpus
 """
 from ..textvisualizer import *
-
+import pandas as pd
 
 class Corpus:
     """
@@ -38,7 +38,7 @@ class Corpus:
     def __str__(self):
         return "Object of class {self.__class__.__name__}".format(self=self)
 
-    def frequencyPlot(self, number_of_words=20, stopwords=None, ngramRange=(1, 1), vocabulary=None):
+    def frequencyPlot(self, number_of_words=20, stopwords=None, ngramRange=(1, 1), vocabulary=None, labels=None):
         """
         Plot a bar graph with the token frequencies.
 
@@ -64,12 +64,29 @@ class Corpus:
             given, a vocabulary is determined from the input documents. Indices
             in the mapping should not be repeated and should not have any gap
             between 0 and the largest index.
+        
+        labels : str or list of str, default=None
+            Labels to be used to filter the text. 
 
         Returns
         -------
         plotly.graph_objs._figure.Figure
         """
-        fig = frequencyPlot(self.listText, number_of_words=number_of_words,
+        if labels is None:
+            fig = frequencyPlot(self.listText, number_of_words=number_of_words,
+                                stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
+        else:
+            if self.listLabels is not None:
+                df = pd.DataFrame({"text" : self.listText, "label" : self.listLabels})
+            else:
+                raise BaseException("The listLabels is None.")
+            if type(labels) == str:
+                df = df[df.label == labels]
+            elif type(labels) == list:
+                df = df[df.label.isin(labels)]
+            else: 
+                raise BaseException("labels must be string or list of string")
+            fig = frequencyPlot(df.text.tolist(), number_of_words=number_of_words,
                             stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
         return fig
 
