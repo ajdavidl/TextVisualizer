@@ -111,7 +111,6 @@ class Corpus:
         -------
         plotly.graph_objs._figure.Figure
         """
-               
         if labels is None:
             fig = phraseNet(self.listText, connectors=connectors,
                         number_of_pairs=number_of_pairs)
@@ -132,7 +131,7 @@ class Corpus:
   
         return fig
 
-    def wordcloudPlot(self, stopwords=None, max_font_size=50, max_words=100, background_color="white"):
+    def wordcloudPlot(self, stopwords=None, max_font_size=50, max_words=100, background_color="white", labels=None):
         """
         Generate Word cloud figure.
 
@@ -152,5 +151,20 @@ class Corpus:
         max_words : number (default=100)
             The maximum number of words.
 
+        labels : str or list of str, default=None
+            Labels to be used to filter the text. 
         """
-        return wordcloudPlot(' '.join(self.listText), stopwords=stopwords, max_font_size=max_font_size, max_words=max_words, background_color=background_color)
+        if labels is None:
+            return wordcloudPlot(' '.join(self.listText), stopwords=stopwords, max_font_size=max_font_size, max_words=max_words, background_color=background_color)
+        else:
+            if self.listLabels is not None:
+                df = pd.DataFrame({"text" : self.listText, "label" : self.listLabels})
+            else:
+                raise BaseException("The listLabels is None.")
+            if type(labels) == str:
+                df = df[df.label == labels]
+            elif type(labels) == list:
+                df = df[df.label.isin(labels)]
+            else: 
+                raise BaseException("labels must be string or list of string")
+            return wordcloudPlot(' '.join(df.text.tolist()), stopwords=stopwords, max_font_size=max_font_size, max_words=max_words, background_color=background_color)
