@@ -90,7 +90,7 @@ class Corpus:
                             stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
         return fig
 
-    def phraseNet(self, connectors, number_of_pairs=20, labels=None):
+    def phraseNet(self, connectors, number_of_pairs=20, labels=None, plotly=False):
         """
         Plot the Phrase net of a list of texts.
 
@@ -109,11 +109,17 @@ class Corpus:
 
         Returns
         -------
-        plotly.graph_objs._figure.Figure
+        networkx draw figure.
+        if plotly is true, it returns plotly.graph_objs._figure.Figure
         """
         if labels is None:
-            fig = phraseNet(self.listText, connectors=connectors,
+            if plotly:
+                return phraseNetPlotly(self.listText, connectors=connectors,
+                            number_of_pairs=number_of_pairs)
+            else:
+                return phraseNet(self.listText, connectors=connectors,
                         number_of_pairs=number_of_pairs)
+
  
         else:
             if self.listLabels is not None:
@@ -126,10 +132,14 @@ class Corpus:
                 df = df[df.label.isin(labels)]
             else: 
                 raise BaseException("labels must be string or list of string")
-            fig = phraseNet(df.text.tolist(), connectors=connectors,
+            if plotly:
+                return phraseNetPlotly(df.text.tolist(), connectors=connectors,
+                        number_of_pairs=number_of_pairs)
+            else:
+                return phraseNet(df.text.tolist(), connectors=connectors,
                         number_of_pairs=number_of_pairs)
   
-        return fig
+ 
 
     def wordcloudPlot(self, stopwords=None, max_font_size=50, max_words=100, background_color="white", labels=None):
         """
