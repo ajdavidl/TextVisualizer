@@ -2,6 +2,9 @@
 Class Corpus
 """
 from ..textvisualizer import *
+from ..phraseNet.phraseNet import *
+from ..frequency.frequency import *
+from ..wordcloud.wordcloud import *
 import pandas as pd
 
 class Corpus:
