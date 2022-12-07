@@ -72,13 +72,86 @@ def frequencyPlot(listText, number_of_words=20, stopwords=None, ngramRange=(1, 1
     fig = go.Figure(data, layout)
     return fig
 
-
 def phraseNet(listText, connectors, number_of_pairs=20):
     """
     Plot the Phrase net of a list of texts.
 
     It plots a phrase net graph based on given connectors from a list of texts.
 
+    It uses networkx draw function to plot the grpah.
+
+    Parameters
+    ----------
+    listText : list of strings
+        List of text to be used as text source in the construction of the graph.
+
+    connectors : list of strings
+        List of connectors to be used in the construction of the graph.
+
+    number_of_pairs : int
+        Number of pairs of words to create the graph.
+    """
+    for i in range(len(connectors)):
+        if " " in connectors[i]:
+            conOrig = connectors[i]
+            conNew = re.sub(" ", "_", conOrig)
+            connectors[i] = conNew
+            for j in range(len(listText)):
+                listText[j] = re.sub(conOrig, conNew, listText[j])
+        connectors[i] = " %s " % connectors[i]
+
+    trigram_count_vect = CountVectorizer(analyzer='word', ngram_range=(3, 3))
+    trigram_count_vect.fit(listText)
+    bag_of_trigrams = trigram_count_vect.transform(listText)
+    sum_trigrams = bag_of_trigrams.sum(axis=0)
+    trigrams_freq = [(trigram, sum_trigrams[0, idx]) for trigram, idx in trigram_count_vect.vocabulary_.items()]
+    trigrams_freq =sorted(trigrams_freq, key = lambda x: x[1], reverse=True)
+    y_pos = np.arange(number_of_pairs)
+    objects = []
+    performance = []
+    count = 0
+    i=0
+
+    G = nx.DiGraph()
+    while (count < number_of_pairs) and (i < len(trigrams_freq)):
+        aux = trigrams_freq[i]
+
+        if sum([connector in aux[0] for connector in connectors])>0:
+            aux = aux[0].split()
+            # Create connections between nodes
+            G.add_edge(aux[0], aux[2], weight=1)
+            count += 1
+        i += 1
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    # Hide grid lines
+    ax.grid(False)
+
+    #pos = nx.spring_layout(G, k=5.5)
+    #pos = nx.kamada_kawai_layout(G)
+    pos = nx.circular_layout(G)
+    
+    # Plot network
+    nx.draw_networkx(G, pos,
+                    font_size=16,
+                    width=3,
+                    edge_color='gray',
+                    node_color='darkblue',
+                    node_shape = '',
+                    with_labels = True,
+                    ax=ax)
+
+    plt.show()
+
+def phraseNetPlotly(listText, connectors, number_of_pairs=20):
+    """
+    Plot the Phrase net of a list of texts.
+
+    It plots a phrase net graph based on given connectors from a list of texts.
+
+    It uses Plotly package to draw the graph.
+    
     Parameters
     ----------
     listText : list of strings
