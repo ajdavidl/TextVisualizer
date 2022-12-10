@@ -41,6 +41,37 @@ class Corpus:
     def __str__(self):
         return "Object of class {self.__class__.__name__}".format(self=self)
 
+    def __mountDataframe(self, labels):
+        """
+        Private method to mount a dataframe with the corpus and labels.
+
+        It check if the given label is valid.
+
+        Raise an error if self.listLabels is None or parameter label is not a string or a list of string.
+
+        Returns a pandas DataFrame if it's everything ok with the labels.
+
+        Parameters
+        ----------
+        labels : str or list of str, default=None
+            Labels to be used to filter the text. 
+
+        Returns
+        -------
+        Pandas DataFrame.
+        """
+        if self.listLabels is not None:
+            df = pd.DataFrame({"text" : self.listText, "label" : self.listLabels})
+        else:
+            raise BaseException("The listLabels is None.")
+        if type(labels) == str:
+            df = df[df.label == labels]
+        elif type(labels) == list:
+            df = df[df.label.isin(labels)]
+        else: 
+            raise BaseException("labels must be string or list of string")
+        return df
+
     def frequencyPlot(self, number_of_words=20, stopwords=None, ngramRange=(1, 1), vocabulary=None, labels=None):
         """
         Plot a bar graph with the token frequencies.
@@ -78,17 +109,8 @@ class Corpus:
         if labels is None:
             fig = frequencyPlot(self.listText, number_of_words=number_of_words,
                                 stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
-        else:
-            if self.listLabels is not None:
-                df = pd.DataFrame({"text" : self.listText, "label" : self.listLabels})
-            else:
-                raise BaseException("The listLabels is None.")
-            if type(labels) == str:
-                df = df[df.label == labels]
-            elif type(labels) == list:
-                df = df[df.label.isin(labels)]
-            else: 
-                raise BaseException("labels must be string or list of string")
+        else: 
+            df = self.__mountDataframe(labels=labels)
             fig = frequencyPlot(df.text.tolist(), number_of_words=number_of_words,
                             stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
         return fig
@@ -125,16 +147,7 @@ class Corpus:
 
  
         else:
-            if self.listLabels is not None:
-                df = pd.DataFrame({"text" : self.listText, "label" : self.listLabels})
-            else:
-                raise BaseException("The listLabels is None.")
-            if type(labels) == str:
-                df = df[df.label == labels]
-            elif type(labels) == list:
-                df = df[df.label.isin(labels)]
-            else: 
-                raise BaseException("labels must be string or list of string")
+            df = self.__mountDataframe(labels=labels)
             if plotly:
                 return phraseNetPlotly(df.text.tolist(), connectors=connectors,
                         number_of_pairs=number_of_pairs)
@@ -169,15 +182,7 @@ class Corpus:
         """
         if labels is None:
             return wordcloudPlot(' '.join(self.listText), stopwords=stopwords, max_font_size=max_font_size, max_words=max_words, background_color=background_color)
+
         else:
-            if self.listLabels is not None:
-                df = pd.DataFrame({"text" : self.listText, "label" : self.listLabels})
-            else:
-                raise BaseException("The listLabels is None.")
-            if type(labels) == str:
-                df = df[df.label == labels]
-            elif type(labels) == list:
-                df = df[df.label.isin(labels)]
-            else: 
-                raise BaseException("labels must be string or list of string")
+            df = self.__mountDataframe(labels=labels)
             return wordcloudPlot(' '.join(df.text.tolist()), stopwords=stopwords, max_font_size=max_font_size, max_words=max_words, background_color=background_color)
