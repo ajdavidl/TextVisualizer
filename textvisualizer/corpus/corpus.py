@@ -186,3 +186,19 @@ class Corpus:
         else:
             df = self.__mountDataframe(labels=labels)
             return wordcloudPlot(' '.join(df.text.tolist()), stopwords=stopwords, max_font_size=max_font_size, max_words=max_words, background_color=background_color)
+    
+    def vennWordcloudPlot(self, labels, stopwords=None):
+        """
+        Generate Venn Word cloud figure.
+
+        It uses the matplotlib_venn_wordcloud and wordcloud package under the hood.
+
+        Parameters
+        ----------
+        labels : list of string
+            Labels to be used in the venn groups. The list has to have 2 or 3 elements.
+
+        stopwords : list of strings, default=None
+            That list is assumed to contain stop words, all of which will be removed from the resulting tokens.
+        """
+        return vennWordcloudPlot(self.listText, self.listLabels, labels, stopwords)

@@ -42,7 +42,7 @@ def vennWordcloudPlot(listText, listLabels, labels, stopwords=None):
     """
     Generate Venn Word cloud figure.
 
-    It uses the Vmatplotlib_venn_wordcloud and wordcloud package under the hood.
+    It uses the matplotlib_venn_wordcloud and wordcloud package under the hood.
 
     Parameters
     ----------
@@ -57,7 +57,6 @@ def vennWordcloudPlot(listText, listLabels, labels, stopwords=None):
 
     stopwords : list of strings, default=None
         That list is assumed to contain stop words, all of which will be removed from the resulting tokens.
-        
     """
     df = pd.DataFrame({"text" : listText, "label" : listLabels} )
     if len(labels) < 2:
