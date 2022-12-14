@@ -1,4 +1,5 @@
 matplotlib
+matplotlib-venn-wordcloud
 networkx
 numpy
 plotly
