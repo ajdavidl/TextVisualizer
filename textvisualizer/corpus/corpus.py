@@ -5,6 +5,7 @@ from ..textvisualizer import *
 from ..phraseNet.phraseNet import *
 from ..frequency.frequency import *
 from ..wordcloud.wordcloud import *
+from ..wordtree.wordtree import *
 import pandas as pd
 
 
@@ -219,3 +220,23 @@ class Corpus:
             That list is assumed to contain stop words, all of which will be removed from the resulting tokens.
         """
         return vennWordcloudPlot(self.listText, self.listLabels, labels, stopwords)
+
+    def wordTree(self, keyword, maxNr=5):
+        """
+        Generate a word tree diagram.
+
+        It uses the wordtree package under the hood.
+
+        Parameters
+        ----------
+        keyword : string
+            The word to be the source of the tree.
+
+        maxNr : integer
+            Maximum number of words to be shown in a leaf of the tree.
+
+        Returns
+        -------
+        graphviz.graphs.Digraph
+        """
+        return wordTree(self.listText, keyword, maxNr)
