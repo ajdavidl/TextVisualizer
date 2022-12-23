@@ -6,6 +6,7 @@ from ..phraseNet.phraseNet import *
 from ..frequency.frequency import *
 from ..wordcloud.wordcloud import *
 from ..wordtree.wordtree import *
+from ..bubbleChart.bubbleChart import bubbleChart
 import pandas as pd
 
 
@@ -57,7 +58,7 @@ class Corpus:
         Parameters
         ----------
         labels : str or list of str, default=None
-            Labels to be used to filter the text. 
+            Labels to be used to filter the text.
 
         Returns
         -------
@@ -104,10 +105,10 @@ class Corpus:
             between 0 and the largest index.
 
         labels : str or list of str, default=None
-            Labels to be used to filter the text. 
+            Labels to be used to filter the text.
 
-        plotly : bolean 
-            Flag to indicate the use of the plotly package. 
+        plotly : bolean
+            Flag to indicate the use of the plotly package.
             Default = False
 
         Returns
@@ -147,10 +148,10 @@ class Corpus:
             Number of pairs of words to create the graph.
 
         labels : str or list of str, default=None
-            Labels to be used to filter the text. 
+            Labels to be used to filter the text.
 
-        plotly : bolean 
-            Flag to indicate the use of the plotly package. 
+        plotly : bolean
+            Flag to indicate the use of the plotly package.
             Default = False
 
         Returns
@@ -196,7 +197,7 @@ class Corpus:
             The maximum number of words.
 
         labels : str or list of str, default=None
-            Labels to be used to filter the text. 
+            Labels to be used to filter the text.
         """
         if labels is None:
             return wordcloudPlot(' '.join(self.listText), stopwords=stopwords, max_font_size=max_font_size, max_words=max_words, background_color=background_color)
@@ -240,3 +241,35 @@ class Corpus:
         graphviz.graphs.Digraph
         """
         return wordTree(self.listText, keyword, maxNr)
+
+    def bubbleChart(self, number_of_words=20, stopwords=None, palette='blue', title=None, labels=None):
+        """
+        Plot a bubble chart.
+
+        It receives a list of text, count the tokens and plot a bubble chart with the frequencies.
+
+        It uses the class BubbleChart available on "https://matplotlib.org/stable/gallery/misc/packed_bubbles.html".
+
+        Parameters
+        ----------
+        number_of_words : int
+            Number of words to be plotted.
+
+        stopwords : list of strings, default=None
+            That list is assumed to contain stop words, all of which will be removed from the resulting tokens.
+
+        palette : str
+            The palette colors to be used on the bubbles. The available options are "red", "green" and "blue". Default="blue".
+
+        title : str
+            The title of the plot.
+
+        labels : str or list of str, default=None
+            Labels to be used to filter the text.
+        """
+        if labels is None:
+            return bubbleChart(self.listText, number_of_words=number_of_words, stopwords=stopwords, palette=palette, title=title)
+
+        else:
+            df = self.__mountDataframe(labels=labels)
+            return bubbleChart(df.text.tolist(), number_of_words=number_of_words, stopwords=stopwords, palette=palette, title=title)
