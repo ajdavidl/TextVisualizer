@@ -14,7 +14,7 @@ The purpose of this package is to centralize in one place many plots related to 
 ![wordcloud](https://img.shields.io/badge/wordcloud-333333?style=flat&labelColor=333333&logoColor=whitesmoke&logo=wordcloud)
 ![SpaCy](https://img.shields.io/badge/SpaCy-0A84FF?style=flat&labelColor=0A84FF&logoColor=whitesmoke&logo=SpaCy) -->
 
-The available plots are frequency plots, word clouds, word trees, bubble charts and phrase nets.
+The available plots are frequency plots, word clouds, word trees, bubble charts, phrase nets and lexical dispersion plots.
 
 ## Status
 

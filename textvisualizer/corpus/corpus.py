@@ -7,6 +7,7 @@ from ..frequency.frequency import *
 from ..wordcloud.wordcloud import *
 from ..wordtree.wordtree import *
 from ..bubbleChart.bubbleChart import bubbleChart
+from ..lexicalDispersion.lexicalDispersion import lexicalDispersionPlot
 import pandas as pd
 
 
@@ -273,3 +274,24 @@ class Corpus:
         else:
             df = self.__mountDataframe(labels=labels)
             return bubbleChart(df.text.tolist(), number_of_words=number_of_words, stopwords=stopwords, palette=palette, title=title)
+
+    def lexicalDispersionPlot(self, targetWords, labels=None):
+        """
+        Make a lexical dispersion plot.
+
+        It uses the package yellowbrick under the hood.
+
+        Parameters
+        ----------
+        targetWords : list of strings
+            The list of words to be used to plot the figure.
+
+        labels : str or list of str, default=None
+            Labels to be used to filter the text.
+        """
+        if labels is None:
+            return lexicalDispersionPlot(self.listText, targetWords=targetWords)
+
+        else:
+            df = self.__mountDataframe(labels=labels)
+            return lexicalDispersionPlot(df.text.tolist(), targetWords=targetWords)
