@@ -9,7 +9,7 @@ def lexicalDispersionPlot(listText, targetWords):
     """
     Make a lexical dispersion plot.
 
-    It receives a list of text and a list of words and maek a lexical dispersion plot.
+    It receives a list of text and a list of words and make a lexical dispersion plot.
     It uses the package yellowbrick under the hood.
 
     Parameters
