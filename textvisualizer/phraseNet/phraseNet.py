@@ -191,7 +191,7 @@ def phraseNetPlotly(listText, connectors, number_of_pairs=20):
     node_trace.text = node_text
     fig = go.Figure(data=[edge_trace, node_trace],
                     layout=go.Layout(
-        title='Phrase Net',
+        title='Phrase Net -' + ' '.join(connectors),
         titlefont_size=16,
         showlegend=False,
         hovermode='closest',
