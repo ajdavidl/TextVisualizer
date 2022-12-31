@@ -8,6 +8,7 @@ from ..wordcloud.wordcloud import *
 from ..wordtree.wordtree import *
 from ..bubbleChart.bubbleChart import bubbleChart
 from ..lexicalDispersion.lexicalDispersion import lexicalDispersionPlot
+from ..correlation.correlation import wordCorrelationsPlot
 import pandas as pd
 
 
@@ -295,3 +296,24 @@ class Corpus:
         else:
             df = self.__mountDataframe(labels=labels)
             return lexicalDispersionPlot(df.text.tolist(), targetWords=targetWords)
+
+    def wordCorrelationsPlot(self, words, labels=None):
+        """
+        Make a correlation plot.
+
+        It uses the package yellowbrick under the hood.
+
+        Parameters
+        ----------
+        words : list of strings
+            The list of words to be used to plot the figure.
+
+        labels : str or list of str, default=None
+            Labels to be used to filter the text.
+        """
+        if labels is None:
+            return wordCorrelationsPlot(self.listText, words=words)
+
+        else:
+            df = self.__mountDataframe(labels=labels)
+            return wordCorrelationsPlot(df.text.tolist(), words=words)
