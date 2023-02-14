@@ -10,3 +10,4 @@ from .wordtree.wordtree import *
 from .bubbleChart.bubbleChart import bubbleChart
 from .lexicalDispersion.lexicalDispersion import lexicalDispersionPlot
 from .correlation.correlation import wordCorrelationsPlot
+from .bigramGraph.bigramGraph import bigramGraph
