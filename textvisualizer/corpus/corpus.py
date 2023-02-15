@@ -9,6 +9,7 @@ from ..wordtree.wordtree import *
 from ..bubbleChart.bubbleChart import bubbleChart
 from ..lexicalDispersion.lexicalDispersion import lexicalDispersionPlot
 from ..correlation.correlation import wordCorrelationsPlot
+from ..bigramGraph.bigramGraph import bigramGraph
 import pandas as pd
 
 
@@ -317,3 +318,27 @@ class Corpus:
         else:
             df = self.__mountDataframe(labels=labels)
             return wordCorrelationsPlot(df.text.tolist(), words=words)
+
+    def bigramGraph(self, stopwords=None,  labels=None, total_bigrams=15):
+        """
+        Make a graph of bigrams.
+
+        It uses the package networkx under the hood.
+
+        Parameters
+        ----------
+        stopwords : list of strings, default=None
+            That list is assumed to contain stop words, all of which will be removed from the resulting tokens.
+
+        labels : str or list of str, default=None
+            Labels to be used to filter the text.
+
+        total_bigrams : integer
+            The number of bigrams that will appear on the graph.
+        """
+        if labels is None:
+            return bigramGraph(self.listText, stopwords=stopwords, total_bigrams=total_bigrams)
+
+        else:
+            df = self.__mountDataframe(labels=labels)
+            return bigramGraph(df.text.tolist(), stopwords=stopwords, total_bigrams=total_bigrams)
