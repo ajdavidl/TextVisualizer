@@ -9,6 +9,17 @@ from sklearn.feature_extraction.text import CountVectorizer
 from yellowbrick.text import FreqDistVisualizer
 
 
+def __countvectorize(listText, stopwords=None, ngramRange=(1, 1), vocabulary=None):
+    count_vect = CountVectorizer(
+        analyzer='word',
+        stop_words=stopwords,
+        ngram_range=ngramRange,
+        vocabulary=vocabulary
+    )
+    count_vect.fit(listText)
+    return count_vect
+
+
 def frequencyPlot(listText, number_of_words=20, stopwords=None, ngramRange=(1, 1), vocabulary=None):
     """
     Plot a bar graph with the token frequencies.
@@ -42,13 +53,7 @@ def frequencyPlot(listText, number_of_words=20, stopwords=None, ngramRange=(1, 1
         in the mapping should not be repeated and should not have any gap
         between 0 and the largest index.
     """
-    count_vect = CountVectorizer(
-        analyzer='word',
-        stop_words=stopwords,
-        ngram_range=ngramRange,
-        vocabulary=vocabulary
-    )
-    count_vect.fit(listText)
+    count_vect = __countvectorize(listText, stopwords, ngramRange, vocabulary)
     bag_of_words = count_vect.transform(listText)
     sum_words = bag_of_words.sum(axis=0)
     word_freq = [(word, sum_words[0, idx])
@@ -105,13 +110,7 @@ def frequencyPlotly(listText, number_of_words=20, stopwords=None, ngramRange=(1,
     -------
     plotly.graph_objs._figure.Figure
     """
-    count_vect = CountVectorizer(
-        analyzer='word',
-        stop_words=stopwords,
-        ngram_range=ngramRange,
-        vocabulary=vocabulary
-    )
-    count_vect.fit(listText)
+    count_vect = __countvectorize(listText, stopwords, ngramRange, vocabulary)
     bag_of_words = count_vect.transform(listText)
     sum_words = bag_of_words.sum(axis=0)
     word_freq = [(word, sum_words[0, idx])
@@ -164,13 +163,7 @@ def frequencyPlotYellowbrick(listText, number_of_words=20, stopwords=None, ngram
         in the mapping should not be repeated and should not have any gap
         between 0 and the largest index.
     """
-    count_vect = CountVectorizer(
-        analyzer='word',
-        stop_words=stopwords,
-        ngram_range=ngramRange,
-        vocabulary=vocabulary
-    )
-    count_vect.fit(listText)
+    count_vect = __countvectorize(listText, stopwords, ngramRange, vocabulary)
     docs = count_vect.transform(listText)
     features = count_vect.get_feature_names_out()
 
