@@ -80,7 +80,7 @@ class Corpus:
             raise BaseException("labels must be string or list of string")
         return df
 
-    def frequencyPlot(self, number_of_words=20, stopwords=None, ngramRange=(1, 1), vocabulary=None, labels=None, plotly=False):
+    def frequencyPlot(self, number_of_words=20, stopwords=None, ngramRange=(1, 1), vocabulary=None, labels=None, package='matplotlib'):
         """
         Plot a bar graph with the token frequencies.
 
@@ -110,30 +110,44 @@ class Corpus:
         labels : str or list of str, default=None
             Labels to be used to filter the text.
 
-        plotly : bolean
-            Flag to indicate the use of the plotly package.
-            Default = False
+        package : string
+            Flag to indicate the use of the package.
+            Default = 'matplotlib'. Others options are 'plotly' and 'yellowbrick'.
 
         Returns
         -------
         matplotlib plot.
-        if plotly is true, it returns plotly.graph_objs._figure.Figure
+        if package is plotly, it returns plotly.graph_objs._figure.Figure.
+        if package is yellowbrick, it returns a yellowbrick plot.
         """
+        if package not in ['matplotlib', 'plotly', 'yellowbrick']:
+            Warning('Wrong package defined. I am going to use matplotlib!!')
+            package = 'matplotlib'
         if labels is None:
-            if plotly:
+            if package == 'plotly':
                 return frequencyPlotly(self.listText, number_of_words=number_of_words,
                                        stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
-            else:
+            elif package == 'matplotlib':
                 return frequencyPlot(self.listText, number_of_words=number_of_words,
                                      stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
+            elif package == 'yellowbrick':
+                return frequencyPlotYellowbrick(self.listText, number_of_words=number_of_words,
+                                                stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
+            else:
+                raise('Wrong package parameter defined.')
         else:
             df = self.__mountDataframe(labels=labels)
-            if plotly:
+            if package == 'plotly':
                 return frequencyPlotly(df.text.tolist(), number_of_words=number_of_words,
                                        stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
-            else:
+            elif package == 'matplotlib':
                 return frequencyPlot(df.text.tolist(), number_of_words=number_of_words,
                                      stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
+            elif package == 'yellowbrick':
+                return frequencyPlotYellowbrick(df.text.tolist(), number_of_words=number_of_words,
+                                                stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
+            else:
+                raise('Wrong package parameter defined.')
         return fig
 
     def phraseNet(self, connectors, number_of_pairs=20, labels=None, plotly=False):
