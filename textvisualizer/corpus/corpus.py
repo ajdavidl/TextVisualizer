@@ -150,6 +150,51 @@ class Corpus:
                 raise('Wrong package parameter defined.')
         return fig
 
+    def frequencyTreeMap(self, number_of_words=100, stopwords=None, ngramRange=(1, 1), vocabulary=None, labels=None):
+        """
+        Plot a tree map with the token frequencies.
+
+        It receives a list of text, count the tokens and plot a tree map with the frequencies.
+
+        It uses plotly express under the hood.
+
+        Parameters
+        ----------
+        number_of_words : int
+            Number of words to be plotted.
+
+        stopwords : list of strings, default=None
+            That list is assumed to contain stop words, all of which will be removed from the resulting tokens.
+
+        ngramRange : tuple (min_n, max_n), default=(1, 1)
+            The lower and upper boundary of the range of n-values for different
+            word n-grams or char n-grams to be extracted. All values of n such
+            such that min_n <= n <= max_n will be used. For example an
+            ``ngram_range`` of ``(1, 1)`` means only unigrams, ``(1, 2)`` means
+            unigrams and bigrams, and ``(2, 2)`` means only bigrams.
+            Only applies if ``analyzer is not callable``.
+
+        vocabulary : Mapping or iterable, default=None
+            Either a Mapping (e.g., a dict) where keys are terms and values are
+            indices in the feature matrix, or an iterable over terms. If not
+            given, a vocabulary is determined from the input documents. Indices
+            in the mapping should not be repeated and should not have any gap
+            between 0 and the largest index.
+        
+        labels : str or list of str, default=None
+            Labels to be used to filter the text.
+
+        Returns
+        -------
+            plotly.graph_objs._figure.Figure
+        """
+        if labels is None:
+            return frequencyTreeMap(self.listText, number_of_words=number_of_words, stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
+
+        else:
+            df = self.__mountDataframe(labels=labels)
+            return frequencyTreeMap(df.text.tolist(), number_of_words=number_of_words, stopwords=stopwords, ngramRange=ngramRange, vocabulary=vocabulary)
+        
     def phraseNet(self, connectors, number_of_pairs=20, labels=None, plotly=False):
         """
         Plot the Phrase net of a list of texts.
