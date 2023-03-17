@@ -4,3 +4,5 @@
 *.pyc
 .python-version
 docs/_build
+docs/_static
+docs/_templates
