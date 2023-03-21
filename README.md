@@ -16,21 +16,15 @@ This is a personal project to centralize in one place many plots related to text
 
 The available plots are frequency plots, word clouds, word trees, bubble charts, phrase nets, lexical dispersion plots and correlation plots.
 
-## Status
-
-In construction!!
-
 ## Installation
 
-Clone this repository and install the requirements.
+Clone this repository and install using pip.
 
 ```bash
 git clone https://github.com/ajdavidl/TextVisualizer.git 
 cd TextVisualizer
-pip install -r requirements.txt
+pip install -e .
 ```
-Inside `TextVisualizer` folder (the root directory of this repository), open python and run your scripts.
-
 
 ## Usage
 
