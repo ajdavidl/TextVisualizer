@@ -11,3 +11,5 @@ from .bubbleChart.bubbleChart import bubbleChart
 from .lexicalDispersion.lexicalDispersion import lexicalDispersionPlot
 from .correlation.correlation import wordCorrelationsPlot
 from .bigramGraph.bigramGraph import bigramGraph
+
+__version__ = '0.1.0'
