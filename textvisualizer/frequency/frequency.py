@@ -292,7 +292,7 @@ def frequencyDonutChart(listText, number_of_words=20, stopwords=None, ngramRange
 
     # Create the layout for the donut chart
     layout = go.Layout(
-        title="Word Frequencies",
+        title="Token Frequencies",
         margin=dict(t=30, b=10, l=10, r=10),
     )
 
